@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -16,7 +16,7 @@ const required = (value) => {
   }
 };
 
-const Login = () => {
+const Login = ({ setCurrentUser }) => {
   let navigate = useNavigate();
 
   const form = useRef();
@@ -48,8 +48,8 @@ const Login = () => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(username, password).then(
         () => {
-          navigate("/profile");
-          window.location.reload();
+          setCurrentUser(AuthService.getCurrentUser());
+          navigate("/map");
         },
         (error) => {
           const resMessage =
