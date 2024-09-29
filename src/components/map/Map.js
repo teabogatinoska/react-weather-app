@@ -99,6 +99,22 @@ const Map = () => {
       >
         <FaLocationArrow style={{ marginRight: "5px" }} /> Locate Me
       </button>
+      <button 
+        //onClick={panToCurrentLocation} 
+        style={{
+          marginTop: "10px",
+          padding: "10px",
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center"
+        }}
+      >
+        <FaLocationArrow style={{ marginRight: "5px" }} /> Confirm Location
+      </button>
     </div>
   );
 };
