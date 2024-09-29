@@ -4,7 +4,7 @@ import {
   useLoadScript,
   Marker,
 } from "@react-google-maps/api";
-import { FaLocationArrow } from 'react-icons/fa';
+import { FaLocationArrow, FaCheck} from 'react-icons/fa';
 
 const mapContainerStyle = {
   width: "1000px", 
@@ -83,28 +83,30 @@ const Map = () => {
       </GoogleMap>
 
       {/* Button to get current location */}
-      <button 
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: "1rem"}}>
+      <button className="locateBtn"
         onClick={panToCurrentLocation} 
         style={{
           marginTop: "10px",
+          marginRight: "10px",
           padding: "10px",
-          backgroundColor: "#007bff",
+          backgroundColor: "#0f63af",
           color: "white",
           border: "none",
           borderRadius: "5px",
           cursor: "pointer",
           display: "flex",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <FaLocationArrow style={{ marginRight: "5px" }} /> Locate Me
       </button>
-      <button 
+      <button className="confirmBtn"
         //onClick={panToCurrentLocation} 
         style={{
           marginTop: "10px",
           padding: "10px",
-          backgroundColor: "#007bff",
+          backgroundColor: "#049963",
           color: "white",
           border: "none",
           borderRadius: "5px",
@@ -113,8 +115,9 @@ const Map = () => {
           alignItems: "center"
         }}
       >
-        <FaLocationArrow style={{ marginRight: "5px" }} /> Confirm Location
+        <FaCheck style={{ marginRight: "5px" }} /> Confirm Location
       </button>
+      </div>
     </div>
   );
 };
