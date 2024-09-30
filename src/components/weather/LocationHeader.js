@@ -1,0 +1,94 @@
+import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+import axios from 'axios';
+import './Weather.css';
+
+const LocationHeader = ({ location, userId, refreshFavorites }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteId, setFavoriteId] = useState(null); 
+
+
+  useEffect(() => {
+    const checkIfFavorite = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/location/favorite-locations/${userId}`);
+        const favoriteLocations = response.data;
+
+        const favoriteLocation = favoriteLocations.find(
+          (fav) => fav.name === location.city && fav.country === location.country
+        );
+
+        if (favoriteLocation) {
+          setIsFavorite(true);
+          setFavoriteId(favoriteLocation.id); 
+          console.log('Favorite location found:', favoriteLocation);
+        } else {
+          setIsFavorite(false);
+          setFavoriteId(null);
+          console.log('Location not in favorites');
+        }
+      } catch (error) {
+        console.error('Error fetching favorite locations', error);
+      }
+    };
+
+    checkIfFavorite();
+  }, [location, userId]);
+
+
+  const toggleFavorite = async () => {
+    if (!isFavorite) {
+
+      try {
+        const response = await axios.post(`http://localhost:8080/api/location/${userId}/favorite-location`, {
+          userId: userId,
+          name: location.city,
+          country: location.country,
+          latitude: location.latitude,
+          longitude: location.longitude,
+        });
+
+        setIsFavorite(true);
+        setFavoriteId(response.data.id);
+        refreshFavorites(); 
+      } catch (error) {
+        console.error('Error adding favorite location', error);
+      }
+    } else {
+  
+      try {
+    
+        if (favoriteId) {
+          await axios.delete(`http://localhost:8080/api/location/${userId}/favorite/${favoriteId}`);
+
+          setIsFavorite(false);
+          setFavoriteId(null);
+          refreshFavorites();
+        } else {
+          console.error('Favorite ID not found for deletion');
+        }
+      } catch (error) {
+        console.error('Error removing favorite location', error);
+      }
+    }
+  };
+
+  return (
+    <div className="current-location">
+      <h2>
+        {location.city}, {location.country}{' '}
+        <span onClick={toggleFavorite} className="favorite-star">
+          <FontAwesomeIcon
+            icon={isFavorite ? solidStar : regularStar}
+            className="star-icon"
+          />
+        </span>
+      </h2>
+      <p>Location: {location.city}, {location.country}</p>
+    </div>
+  );
+};
+
+export default LocationHeader;

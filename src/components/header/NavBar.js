@@ -33,6 +33,11 @@ const Navbar = ({ currentUser, logOut }) => {
                 Map
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to={"/weather"} className="nav-link">
+                Weather
+              </Link>
+            </li>
           </ul>
 
           {currentUser ? (
