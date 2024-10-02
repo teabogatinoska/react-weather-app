@@ -54,7 +54,7 @@ const Map = ({ currentUser }) => {
           const newCenter = { lat: latitude, lng: longitude };
           console.log("Coordinates: ", position.coords);
           setCurrentPosition(newCenter);
-          console.log("Current position: ", currentPosition);
+          // console.log("Current position: ", currentPosition);
           mapRef.current.panTo(newCenter);
           mapRef.current.setZoom(14);
         },
@@ -87,9 +87,9 @@ const Map = ({ currentUser }) => {
         longitude: currentPosition.lng
       };
 
-      await axios.post('http://localhost:8080/api/weather/request', requestData);
-
-      navigate("/weather");
+      const response = await axios.post('http://localhost:8080/api/weather/request', requestData);
+      // console.log("Weather response: ", response);
+      navigate("/weather", { state: { location: response.data } });
     } catch (error) {
       console.error("Error confirming location:", error);
       alert("An error occurred while confirming the location.");

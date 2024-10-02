@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import LocationHeader from './LocationHeader';
 import CurrentConditions from './CurrentConditions';
 import DailyForecastTable from './DailyForecastTable';
@@ -6,15 +7,22 @@ import FavoriteCities from './FavoriteCities';
 import axios from 'axios';
 import './Weather.css';
 
-const WeatherDashboard = ({ userId }) => {
-  const location = { city: "London", country: "UK", latitude: 51.50853, longitude: 0.12574 };
-  const currentConditions = {
-    temperature: 25,
-    wind: 3,
-    precipitation: 0,
-    humidity: 60,
-    airQuality: { pm2_5: 10, pm10: 10 },
-  };
+const WeatherDashboard = ({ currentUser }) => {
+  const { state } = useLocation();
+
+  const location = state?.location
+    ? {
+        name: state.location.name,
+        country: state.location.country,
+        latitude: state.location.latitude,
+        longitude: state.location.longitude,
+      }
+    : {
+        name: "London",
+        country: "UK",
+        latitude: 51.50853,
+        longitude: 0.12574,
+      };
 
   const forecast = [
     { day: "Monday", temperature: "25 / 13", wind: 7, precipitation: 10, humidity: 60 },
@@ -27,7 +35,7 @@ const WeatherDashboard = ({ userId }) => {
 
   const fetchFavoriteCities = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/location/favorite-locations/${userId}`);
+      const response = await axios.get(`http://localhost:8080/api/location/favorite-locations/${currentUser.id}`);
       setFavoriteCities(response.data);
     } catch (error) {
       console.error('Error fetching favorite cities:', error);
@@ -36,16 +44,16 @@ const WeatherDashboard = ({ userId }) => {
 
   useEffect(() => {
     fetchFavoriteCities();
-  }, [userId]);
+  }, [currentUser.id]);
 
   return (
     <div className="weather-dashboard">
       <div className="left-section">
-        <LocationHeader location={location} userId={userId} refreshFavorites={fetchFavoriteCities} />
-        <CurrentConditions {...currentConditions} />
+        <LocationHeader location={location} userId={currentUser.id} refreshFavorites={fetchFavoriteCities} />
+        <CurrentConditions location={location} currentUser={currentUser} />
       </div>
       <div className="right-section">
-        <FavoriteCities favoriteCities={favoriteCities} />
+        <FavoriteCities favoriteCities={favoriteCities} currentUser={currentUser}/>
       </div>
       <div className="forecast-section">
         <DailyForecastTable forecast={forecast} />

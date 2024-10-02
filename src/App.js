@@ -51,7 +51,7 @@ const App = () => {
           <Route
             path="/map"
             element={currentUser ? <Map currentUser={currentUser}/> : <Navigate to="/login" replace />}
-          /><Route path="/weather" element={<WeatherDashboard userId={currentUser?.id} />} />
+          /><Route path="/weather" element={<WeatherDashboard currentUser={currentUser} />} />
         </Routes>
       </div>
     </div>

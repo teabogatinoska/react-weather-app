@@ -17,13 +17,13 @@ const LocationHeader = ({ location, userId, refreshFavorites }) => {
         const favoriteLocations = response.data;
 
         const favoriteLocation = favoriteLocations.find(
-          (fav) => fav.name === location.city && fav.country === location.country
+          (fav) => fav.name === location.name && fav.country === location.country
         );
 
         if (favoriteLocation) {
           setIsFavorite(true);
           setFavoriteId(favoriteLocation.id); 
-          console.log('Favorite location found:', favoriteLocation);
+          // console.log('Favorite location found:', favoriteLocation);
         } else {
           setIsFavorite(false);
           setFavoriteId(null);
@@ -44,7 +44,7 @@ const LocationHeader = ({ location, userId, refreshFavorites }) => {
       try {
         const response = await axios.post(`http://localhost:8080/api/location/${userId}/favorite-location`, {
           userId: userId,
-          name: location.city,
+          name: location.name,
           country: location.country,
           latitude: location.latitude,
           longitude: location.longitude,
@@ -78,7 +78,7 @@ const LocationHeader = ({ location, userId, refreshFavorites }) => {
   return (
     <div className="current-location">
       <h2>
-        {location.city}, {location.country}{' '}
+        {location.name}, {location.country}{' '}
         <span onClick={toggleFavorite} className="favorite-star">
           <FontAwesomeIcon
             icon={isFavorite ? solidStar : regularStar}
@@ -86,7 +86,6 @@ const LocationHeader = ({ location, userId, refreshFavorites }) => {
           />
         </span>
       </h2>
-      <p>Location: {location.city}, {location.country}</p>
     </div>
   );
 };
