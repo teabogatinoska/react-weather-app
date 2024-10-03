@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { FaWind, FaCloudRain, FaTint, FaSmog } from "react-icons/fa";
+import { FaWind, FaCloudRain, FaTint, FaQuestion, FaCloudSunRain } from "react-icons/fa";
 import axios from "axios";
 import "./Weather.css";
 import { weatherConditions } from "../data/WeatherConditions";
+import { FaSun, FaMoon, FaCloudSun, FaCloud, FaSmog, FaCloudShowersHeavy, FaBolt, FaSnowflake } from "react-icons/fa";
+import { FaCloudBolt } from "react-icons/fa6";
+
 
 const CurrentConditions = ({ location, currentUser }) => {
   const [currentConditions, setCurrentConditions] = useState({
@@ -19,14 +22,50 @@ const CurrentConditions = ({ location, currentUser }) => {
   const memoizedLocation = useMemo(() => location, [location]);
 
   const getWeatherIcon = (description) => {
-    if (!description) return "❓"; 
+    if (!description) return <FaQuestion />;
+    console.log("Item: ", description);
     const condition = weatherConditions.find(
       (item) =>
-        item.day.toLowerCase() === description.toLowerCase() ||
-        item.night.toLowerCase() === description.toLowerCase()
+        
+        item.day.trim().toLowerCase() === description.trim().toLowerCase() ||
+        item.night.trim().toLowerCase() === description.trim().toLowerCase()
+        
     );
-    return condition ? condition.icon : "❓";
+  
+    if (!condition) return <FaQuestion />;
+  
+    switch (condition.icon) {
+      case "fas fa-sun":
+        return <FaSun style={{ color: "orange" }} />;
+      case "fas fa-moon":
+        return <FaMoon style={{ color: "yellow" }} />;
+      case "fas fa-cloud-sun":
+        return <FaCloudSun style={{ color: "lightgray" }} />;
+      case "fas fa-cloud":
+        return <FaCloud style={{ color: "gray" }} />;
+      case "fas fa-smog":
+        return <FaSmog style={{ color: "darkgray" }} />;
+      case "fas fa-cloud-showers-heavy":
+        return <FaCloudShowersHeavy style={{ color: "blue" }} />;
+      case "fas fa-bolt":
+        return <FaBolt style={{ color: "yellow" }} />;
+      case "fas fa-snowflake":
+        return <FaSnowflake style={{ color: "lightblue" }} />;
+      case "fas fa-cloud-sleet":
+        return <FaCloudShowersHeavy style={{ color: "blue" }} />;
+      case "fas fa-cloud-bolt":
+        return <FaBolt style={{ color: "yellow" }} />; 
+      case "fas fa-cloud-sun-rain":
+        return <FaCloudSunRain style={{ color: "lightblue" }} />; 
+      case "fas fa-thunder":
+        return <FaCloudBolt  style={{ color: "lightgrey" }} />
+      default:
+        return <FaQuestion style={{ color: "gray" }} />;
+    }
+    
+    
   };
+  
 
   const fetchWeatherData = async (retryCount = 3) => {
     setLoading(true); 
@@ -117,6 +156,7 @@ const CurrentConditions = ({ location, currentUser }) => {
       <div className="temp-icon-container">
         <div className="temp">{currentConditions.temperature}°</div>
         <div className="icon">{getWeatherIcon(currentConditions.description)}</div>
+
         <div className="description">{currentConditions.description}</div>
       </div>
 

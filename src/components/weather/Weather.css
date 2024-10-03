@@ -1,4 +1,5 @@
 /* General styling */
+
 body {
   margin: 0;
   padding: 0;
@@ -79,7 +80,6 @@ body {
     align-items: center;
     justify-content: space-between; 
     padding: 10px 0;
-    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); */
     background-color: #f7f7f7;
   }
   
@@ -140,19 +140,19 @@ body {
 }
 
 .current-conditions .icon {
-  font-size: 4rem;
+  font-size: 3.5rem;
   margin-right: 10px;
-  margin-top: 10px;
- 
 }
 
 .current-conditions .temp {
   font-size: 3rem;
   font-weight: bold;
   color: #b21002; 
+  margin-right: 10px;
 }
 .current-conditions .description {
   font-size: 1.3rem;
+  margin-left: 10px;
 }
 
 .details-horizontal {
@@ -291,3 +291,105 @@ body {
   font-size: 1rem;
   transition: color 0.3s ease; 
 }
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 100vh;
+  overflow-y: auto;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative; 
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-modal:hover {
+  color: #f44336; 
+}
+
+.hourly-forecast-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.hourly-forecast-table th,
+.hourly-forecast-table td {
+  padding: 10px 5px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.hourly-forecast-table th {
+  background-color: #05468d;
+  color: #fff;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.hourly-forecast-table th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.hourly-forecast-table th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.hourly-forecast-table tbody {
+  display: block;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.hourly-forecast-table tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.hourly-forecast-table td {
+  border-bottom: 1px solid #e0e0e0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hourly-forecast-table  .temp{
+ color: #b21002;
+}
+
+.hourly-forecast-table  .precip{
+  color: #2196f3;
+ }
+ .hourly-forecast-table  .icon{
+  font-size: 1.7rem;
+ }

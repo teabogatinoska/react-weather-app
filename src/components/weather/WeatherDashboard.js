@@ -15,8 +15,8 @@ const WeatherDashboard = ({ currentUser }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const previousLocation = useRef(null);
-  const [favoritesLoaded, setFavoritesLoaded] = useState(false); 
-  const [bannerMessage, setBannerMessage] = useState(""); 
+  const [favoritesLoaded, setFavoritesLoaded] = useState(false);
+  const [bannerMessage, setBannerMessage] = useState("");
   const [isFavoriteBanner, setIsFavoriteBanner] = useState(null);
 
   const location = useMemo(() => {
@@ -29,14 +29,13 @@ const WeatherDashboard = ({ currentUser }) => {
       longitude: favoriteCities[0].longitude,
     } : null); 
   }, [state, favoriteCities, favoritesLoaded]);
-  
-  
 
   const fetchDailyForecast = async (retryCount = 3) => {
     if (!location || !location.name || !location.country) return;
-
+    
     setLoading(true);
     setError(null);
+    let isMounted = true;
 
     try {
       const response = await axios.get(
@@ -45,50 +44,69 @@ const WeatherDashboard = ({ currentUser }) => {
       );
       const forecastData = response.data.dailyData;
 
-      const formattedForecast = Object.entries(forecastData).map(([day, data]) => ({
-        day,
-        temperature: `${data.max} / ${data.min}`,
-        wind: data.windSpeed,
-        precipitation: data.precipitation,
-        humidity: data.humidity,
-      }));
-
-      setDailyForecast(formattedForecast);
+      if (isMounted) {
+        const formattedForecast = Object.entries(forecastData).map(([day, data]) => ({
+          day,
+          temperature: `${data.max} / ${data.min}`,
+          wind: data.windSpeed,
+          precipitation: data.precipitation,
+          humidity: data.humidity,
+        }));
+        setDailyForecast(formattedForecast);
+      }
     } catch (error) {
       if (retryCount > 0) {
         console.warn(`Retrying fetch... Attempts left: ${retryCount}`);
-        setTimeout(() => fetchDailyForecast(retryCount - 1), 1000); 
+        setTimeout(() => fetchDailyForecast(retryCount - 1), 1000);
       } else {
-        console.error("Error fetching daily forecast:", error);
-        setError("Failed to fetch daily forecast. Please try again.");
+        if (isMounted) {
+          setError("Failed to fetch daily forecast. Please try again.");
+        }
       }
     } finally {
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     }
+
+    return () => {
+      isMounted = false;
+    };
   };
 
   const fetchFavoriteCities = async () => {
+    let isMounted = true;
+
     try {
       const response = await axios.get(
         `http://localhost:8080/api/location/favorite-locations/${currentUser.id}`
       );
-      setFavoriteCities(response.data);
-      setFavoritesLoaded(true); 
+      if (isMounted) {
+        setFavoriteCities(response.data);
+        setFavoritesLoaded(true);
+      }
     } catch (error) {
       console.error("Error fetching favorite cities:", error);
-      setFavoritesLoaded(true); 
+      if (isMounted) {
+        setFavoritesLoaded(true);
+      }
     }
+
+    return () => {
+      isMounted = false;
+    };
   };
 
   const handleFavoriteAdded = (message, isFavorite) => {
     setBannerMessage(message);
-    setIsFavoriteBanner(isFavorite); 
+    setIsFavoriteBanner(isFavorite);
   };
 
   const closeBanner = () => {
     setBannerMessage("");
     setIsFavoriteBanner(null);
   };
+
   useEffect(() => {
     fetchFavoriteCities();
   }, [currentUser.id]);
@@ -107,8 +125,14 @@ const WeatherDashboard = ({ currentUser }) => {
 
   return (
     <div className="weather-dashboard">
-      {bannerMessage && <FavoriteBanner message={bannerMessage} onClose={closeBanner} isFavorite={isFavoriteBanner} />}
-      
+      {bannerMessage && (
+        <FavoriteBanner
+          message={bannerMessage}
+          onClose={closeBanner}
+          isFavorite={isFavoriteBanner}
+        />
+      )}
+
       {location ? (
         <>
           <div className="left-section">
@@ -132,16 +156,19 @@ const WeatherDashboard = ({ currentUser }) => {
             ) : error ? (
               <div>{error}</div>
             ) : (
-              <DailyForecastTable forecast={dailyForecast} />
+              <DailyForecastTable
+                forecast={dailyForecast}
+                location={location}
+                currentUser={currentUser}
+              />
             )}
           </div>
         </>
       ) : (
-        <div>No location selected</div> 
+        <div>No location selected</div>
       )}
     </div>
   );
-  
 };
 
 export default WeatherDashboard;
