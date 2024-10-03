@@ -11,7 +11,7 @@ body {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 20px;
-  max-width: 1400px; /* Increase the max-width to make the dashboard wider */
+  max-width: 1400px; 
   margin: 0 auto;
   padding: 20px;
 }
@@ -22,7 +22,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: #fff;
+  background-color: #f7f7f7;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -35,15 +35,18 @@ body {
   text-align: left;
   border: 1px solid #ddd;
   border-radius: 10px;
-  background-color: #fff;
+  background-color: #f7f7f7;
   padding: 15px;
   overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .favorites h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #4a90e2;
+  font-size: 1.75rem;
+  margin-bottom: 15px;
+  color: #05468d;
+  text-align: center;
+  font-weight: bold;
 }
 
 .favorites ul {
@@ -53,26 +56,31 @@ body {
 
 .favorites li {
   font-size: 1.25rem;
-  padding: 10px;
-  margin: 5px 0;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  margin: 8px 0;
+  background-color: #fafafa; 
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   text-align: center;
+  border: 1px solid #e0e0e0; 
 }
 
 .favorites li:hover {
-  background-color: #e6f3ff;
+  background-color: #d0e8ff; 
+  transform: translateY(-3px); 
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Current Location */
 .current-location {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* To push the star to the right */
+    justify-content: space-between; 
     padding: 10px 0;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); */
+    background-color: #f7f7f7;
   }
   
   .current-location h2 {
@@ -90,7 +98,7 @@ body {
   .star-icon {
     color: gold;
     font-size: 1.75rem;
-    transition: color 0.3s ease; /* Smooth transition on hover */
+    transition: color 0.3s ease; 
   }
   
   .favorite-star:hover .star-icon {
@@ -109,11 +117,12 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f9f9f9;
+  background-color: #f7f7f7;
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
   width: 100%;
+  
 }
 
 .current-conditions h2 {
@@ -127,6 +136,7 @@ body {
   align-items: center;
   justify-content: center;
   margin-bottom: 15px;
+  background-color: #f7f7f7;
 }
 
 .current-conditions .icon {
@@ -199,7 +209,6 @@ body {
 .forecast-table th {
   font-size: 1.1rem;
   color: #05468d;
-  /* background-color: #e6f0fb; */
   font-weight: bold;
   border-bottom: 2px solid #ddd;
 }

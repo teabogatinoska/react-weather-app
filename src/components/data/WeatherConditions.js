@@ -1,7 +1,7 @@
 export const weatherConditions = [
   { code: 1000, day: "Sunny", night: "Sunny", icon: "☀️" },
   { code: 1001, day: "Clear", night: "Clear", icon: "🌕" },
-  { code: 1003, day: "Partly cloudy", night: "Partly cloudy", icon: "🌤" },
+  { code: 1003, day: "Partly cloudy", night: "Partly cloudy", icon: "🌥" },
   { code: 1006, day: "Cloudy", night: "Cloudy", icon: "☁️" },
   { code: 1009, day: "Overcast", night: "Overcast", icon: "🌥" },
   { code: 1030, day: "Mist", night: "Mist", icon: "🌫" },
