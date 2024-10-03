@@ -9,30 +9,31 @@ const FavoriteCities = ({ favoriteCities, currentUser }) => {
 
   const handleCityClick = async (city) => {
     if (loading) return;
-
+  
     try {
       setLoading(true); 
-
+  
       const requestData = {
         userId: currentUser.id,
         username: currentUser.username,
         latitude: city.latitude,
         longitude: city.longitude,
       };
-
+  
       const response = await axios.post(
         "http://localhost:8080/api/weather/request",
         requestData
       );
-
+  
       console.log("Weather response: ", response.data);
-      navigate("/weather", { state: { location: response.data } });
+      navigate("/weather", { state: { location: city } });
     } catch (error) {
       console.error("Error fetching weather for selected city:", error);
     } finally {
       setLoading(false); 
     }
   };
+  
 
   return (
     <div className="favorites">

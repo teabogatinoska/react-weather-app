@@ -114,6 +114,11 @@ const Map = ({ currentUser }) => {
         center={currentPosition}
         options={options}
         onLoad={onMapLoad}
+        onClick={(event) => {
+          const newLat = event.latLng.lat();
+          const newLng = event.latLng.lng();
+          setCurrentPosition({ lat: newLat, lng: newLng });
+        }}
       >
         {/* Draggable Marker */}
         <Marker

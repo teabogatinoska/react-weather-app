@@ -5,7 +5,7 @@ import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import axios from 'axios';
 import './Weather.css';
 
-const LocationHeader = ({ location, userId, refreshFavorites }) => {
+const LocationHeader = ({ location, userId, refreshFavorites, onFavoriteAdded }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteId, setFavoriteId] = useState(null); 
 
@@ -23,7 +23,7 @@ const LocationHeader = ({ location, userId, refreshFavorites }) => {
         if (favoriteLocation) {
           setIsFavorite(true);
           setFavoriteId(favoriteLocation.id); 
-          // console.log('Favorite location found:', favoriteLocation);
+
         } else {
           setIsFavorite(false);
           setFavoriteId(null);
@@ -40,7 +40,6 @@ const LocationHeader = ({ location, userId, refreshFavorites }) => {
 
   const toggleFavorite = async () => {
     if (!isFavorite) {
-
       try {
         const response = await axios.post(`http://localhost:8080/api/location/${userId}/favorite-location`, {
           userId: userId,
@@ -52,20 +51,19 @@ const LocationHeader = ({ location, userId, refreshFavorites }) => {
 
         setIsFavorite(true);
         setFavoriteId(response.data.id);
-        refreshFavorites(); 
+        refreshFavorites();
+        onFavoriteAdded(`${location.name} was added to favorite locations`, true);
       } catch (error) {
         console.error('Error adding favorite location', error);
       }
     } else {
-  
       try {
-    
         if (favoriteId) {
           await axios.delete(`http://localhost:8080/api/location/${userId}/favorite/${favoriteId}`);
-
           setIsFavorite(false);
           setFavoriteId(null);
           refreshFavorites();
+          onFavoriteAdded(`${location.name} was removed from favorite locations`, false); 
         } else {
           console.error('Favorite ID not found for deletion');
         }

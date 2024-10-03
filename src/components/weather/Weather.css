@@ -139,7 +139,7 @@ body {
 .current-conditions .temp {
   font-size: 3rem;
   font-weight: bold;
-  /* color: #ff5722;  */
+  color: #b21002; 
 }
 .current-conditions .description {
   font-size: 1.3rem;
@@ -177,50 +177,67 @@ body {
 .forecast-section {
   grid-column: 1 / 3;
   margin-top: 20px;
+  width: 100%;
 }
+
 .forecast-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
+  background-color: #f9f9f9;
   border-radius: 10px;
-  padding: 15px;
+  overflow: hidden; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .forecast-table th,
 .forecast-table td {
-  padding: 15px;
+  padding: 15px 20px;
   text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 .forecast-table th {
-  font-size: 1.25rem;
-  color: #4a90e2;
-  border-bottom: 1px solid #ddd;
+  font-size: 1.1rem;
+  color: #05468d;
+  /* background-color: #e6f0fb; */
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
 }
 
 .forecast-table td {
-  font-size: 1rem;
+  font-size: 1.1rem;
   border-bottom: 1px solid #ddd;
+  background-color: #fff;
 }
-
 .forecast-table tr:last-child td {
   border-bottom: none;
 }
+.forecast-table .precip{
+  color: #047cfc;
+}
 
+.forecast-table .temp{
+  color: #b21002;
+}
+
+.weekDay {
+  font-weight: bold;
+  color: #05468d;
+}
 
 .open-forecast {
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  color: #007bff;
-  font-weight: bold;
+  color: #05468d;
   transition: color 0.3s ease;
+  width: 100%;
 }
 
 .open-forecast .arrow {
   margin-left: 5px;
-  transition: color 0.3s ease; 
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .open-forecast:hover {
@@ -228,5 +245,40 @@ body {
 }
 
 .open-forecast:hover .arrow {
+  transform: translateX(3px);
   color: #0056b3;
+}
+
+.banner {
+  position: fixed;
+  bottom: 20px; 
+  right: 20px;
+  background-color: #e6f0fb;
+  color: #333;
+  padding: 15px 25px; 
+  border-radius: 8px; 
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+  width: 400px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.banner.hidden {
+  transform: translateX(100%);
+  opacity: 0; 
+}
+
+.banner p {
+  margin: 0;
+}
+
+.banner .bannerIcon {
+  color: gold;
+  font-size: 1rem;
+  transition: color 0.3s ease; 
 }

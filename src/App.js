@@ -17,6 +17,7 @@ import WeatherDashboard from "./components/weather/WeatherDashboard";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -24,6 +25,7 @@ const App = () => {
     if (user) {
       setCurrentUser(user);
     }
+    setLoading(false);
 
     return () => {
       eventBus.remove("logout");
@@ -34,6 +36,10 @@ const App = () => {
     AuthService.logout();
     setCurrentUser(undefined);
   };
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
 
   return (
     <div>
