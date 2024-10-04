@@ -393,3 +393,99 @@ body {
  .hourly-forecast-table  .icon{
   font-size: 1.7rem;
  }
+
+ /* Alerts */
+.weather-alerts-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.weather-alerts-container ul{
+  list-style-type: none;
+}
+.section-title {
+  font-size: 2rem;
+  color: #05468d;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.location-alert-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.location-alert-card:hover {
+  transform: translateY(-5px);
+}
+
+.location-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #05468d;
+}
+
+.alert-item-card {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid #05468d;
+  position: relative;
+}
+
+.alert-item-card:last-child {
+  margin-bottom: 0;
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alert-header strong {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.alert-severity {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+/* Severity Color Coding */
+.severity-unknown {
+  background-color: #6c757d;
+}
+
+.severity-moderate {
+  background-color: #ffc107;
+}
+
+.severity-immediate {
+  background-color: #dc3545;
+}
+
+.alert-info {
+  margin-top: 10px;
+  color: #555;
+}
+
+.alert-info span {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.alert-info strong {
+  color: #333;
+}

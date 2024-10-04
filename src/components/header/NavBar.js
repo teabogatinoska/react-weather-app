@@ -35,7 +35,12 @@ const Navbar = ({ currentUser, logOut }) => {
             </li>
             <li className="nav-item">
               <Link to={"/weather"} className="nav-link">
-                Weather
+                Forecast
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/weather-alerts"} className="nav-link">
+                Weather Alerts
               </Link>
             </li>
           </ul>

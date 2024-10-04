@@ -14,6 +14,7 @@ import BoardUser from "./components/authentication/BoardUser";
 import eventBus from "./common/EventBus";
 import Map from "./components/map/Map";
 import WeatherDashboard from "./components/weather/WeatherDashboard";
+import WeatherAlerts from "./components/aletrs/WeatherAlerts";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -58,6 +59,7 @@ const App = () => {
             path="/map"
             element={currentUser ? <Map currentUser={currentUser}/> : <Navigate to="/login" replace />}
           /><Route path="/weather" element={<WeatherDashboard currentUser={currentUser} />} />
+           <Route path="/weather-alerts" element={<WeatherAlerts currentUser={currentUser} />} />
         </Routes>
       </div>
     </div>
