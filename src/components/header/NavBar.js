@@ -1,8 +1,110 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../logo.png";
+import { FaSearch } from "react-icons/fa";
 
 const Navbar = ({ currentUser, logOut }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const searchContainerRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleSearchChange = async (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    if (query.length > 2) {
+      const source = axios.CancelToken.source();
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/location/search?query=${encodeURIComponent(
+            query
+          )}`,
+          { cancelToken: source.token }
+        );
+        setSearchResults(response.data);
+        setIsDropdownVisible(true);
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("Request canceled", error.message);
+        } else {
+          console.error("Error fetching search results:", error);
+          setSearchResults([]);
+          setIsDropdownVisible(false);
+        }
+      }
+      return () => {
+        source.cancel("Operation canceled by the user.");
+      };
+    } else {
+      setSearchResults([]);
+      setIsDropdownVisible(false);
+    }
+  };
+
+  const handleClickOutside = (e) => {
+    if (
+      searchContainerRef.current &&
+      !searchContainerRef.current.contains(e.target)
+    ) {
+      setIsDropdownVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSelectResult = (result) => {
+    console.log("Result: ", result);
+    setSearchQuery(result.name + ", " + result.country);
+    setSelectedLocation(result);
+    setIsDropdownVisible(false);
+    confirmLocation(result);
+  };
+
+  const confirmLocation = async (result) => {
+    if (!currentUser) {
+      alert("User not found. Please log in.");
+      return;
+    }
+
+    try {
+      const requestData = {
+        userId: currentUser.id,
+        username: currentUser.username,
+        latitude: result.latitude,
+        longitude: result.longitude,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8080/api/weather/request",
+        requestData
+      );
+      navigate("/weather", { state: { location: response.data } });
+    } catch (error) {
+      console.error("Error confirming location:", error);
+      alert("An error occurred while confirming the location.");
+    }
+  };
+
+  const handleLogout = () => {
+    logOut(); 
+    navigate("/login"); 
+  };
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      setIsDropdownVisible(false);
+    }
+  }, [searchQuery]);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div className="container">
@@ -44,6 +146,32 @@ const Navbar = ({ currentUser, logOut }) => {
               </Link>
             </li>
           </ul>
+          <div className="search-bar-container" ref={searchContainerRef}>
+      <input
+        type="text"
+        className="form-control search-input"
+        placeholder="Search for a city..."
+        value={searchQuery}
+        onChange={handleSearchChange}
+        onFocus={() => setIsDropdownVisible(true)}
+      />
+    
+      <FaSearch className="search-icon" />
+
+      {isDropdownVisible && searchResults.length > 0 && (
+        <ul className="dropdown-menu show">
+          {searchResults.map((result, index) => (
+            <li
+              key={index}
+              className="dropdown-item"
+              onClick={() => handleSelectResult(result)}
+            >
+              {result.name}, {result.country}, {result.area}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
 
           {currentUser ? (
             <ul className="navbar-nav ms-auto">
@@ -57,7 +185,7 @@ const Navbar = ({ currentUser, logOut }) => {
               <li className="nav-item">
                 <button
                   className="btn btn-outline-secondary ms-2"
-                  onClick={logOut}
+                  onClick={handleLogout}
                 >
                   LogOut
                 </button>

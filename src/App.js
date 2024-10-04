@@ -14,7 +14,7 @@ import BoardUser from "./components/authentication/BoardUser";
 import eventBus from "./common/EventBus";
 import Map from "./components/map/Map";
 import WeatherDashboard from "./components/weather/WeatherDashboard";
-import WeatherAlerts from "./components/aletrs/WeatherAlerts";
+import WeatherAlerts from "./components/alerts/WeatherAlerts";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(undefined);

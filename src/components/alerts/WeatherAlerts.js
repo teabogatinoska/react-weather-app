@@ -12,7 +12,7 @@ const WeatherAlerts = ({ currentUser }) => {
       setAlertsData(response.data.locationAlerts);
       setLoading(false);
     } catch (error) {
-      setError("Failed to load weather alerts.");
+      setError("No weather alerts found.");
       setLoading(false);
     }
   };

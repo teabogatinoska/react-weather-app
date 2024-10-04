@@ -1,8 +1,20 @@
 import React from 'react';
 import './Weather.css';
 import { weatherConditions } from "../data/WeatherConditions";
-import { FaSun, FaMoon, FaCloudSun, FaCloud,FaCloudSunRain, FaSmog, FaCloudShowersHeavy, FaBolt, FaSnowflake, FaQuestion} from "react-icons/fa";
-
+import {
+  FaSun,
+  FaMoon,
+  FaCloudSun,
+  FaCloud,
+  FaSmog,
+  FaCloudShowersHeavy,
+  FaBolt,
+  FaSnowflake,
+  FaCloudRain,
+  FaTint,
+  FaQuestion,
+  FaCloudSunRain
+} from "react-icons/fa";
 
 
 const HourlyForecastModal = ({ isOpen, onClose, hourlyData, day, descriptions, airQualityData }) => {
@@ -43,9 +55,9 @@ const HourlyForecastModal = ({ isOpen, onClose, hourlyData, day, descriptions, a
       case "fas fa-sun":
         return <FaSun style={{ color: "orange" }} />;
       case "fas fa-moon":
-        return <FaMoon style={{ color: "yellow" }} />;
+        return <FaMoon style={{ color: "gray" }} />;
       case "fas fa-cloud-sun":
-        return <FaCloudSun style={{ color: "lightgray" }} />;
+        return <FaCloudSun style={{ color: "lightblue" }} />;
       case "fas fa-cloud":
         return <FaCloud style={{ color: "gray" }} />;
       case "fas fa-smog":
@@ -59,13 +71,18 @@ const HourlyForecastModal = ({ isOpen, onClose, hourlyData, day, descriptions, a
       case "fas fa-cloud-sleet":
         return <FaCloudShowersHeavy style={{ color: "blue" }} />;
       case "fas fa-cloud-bolt":
-        return <FaBolt style={{ color: "yellow" }} />; 
+        return <FaBolt style={{ color: "yellow" }} />;
       case "fas fa-cloud-sun-rain":
-        return <FaCloudSunRain style={{ color: "lightblue" }} />; 
+        return <FaCloudSunRain style={{ color: "lightblue" }} />;
+      case "fas fa-thunder":
+        return <FaBolt style={{ color: "yellow" }} />;
+      case "fas fa-cloud-rain":
+        return <FaCloudRain style={{ color: "lightgrey" }} />;
+      case "fas fa-rain-bolt":
+        return <FaBolt style={{ color: "yellow" }} />;
       default:
         return <FaQuestion style={{ color: "gray" }} />;
     }
-    
   };
   
 

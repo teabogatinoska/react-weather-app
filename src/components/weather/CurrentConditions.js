@@ -1,11 +1,22 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { FaWind, FaCloudRain, FaTint, FaQuestion, FaCloudSunRain } from "react-icons/fa";
 import axios from "axios";
 import "./Weather.css";
 import { weatherConditions } from "../data/WeatherConditions";
-import { FaSun, FaMoon, FaCloudSun, FaCloud, FaSmog, FaCloudShowersHeavy, FaBolt, FaSnowflake } from "react-icons/fa";
-import { FaCloudBolt } from "react-icons/fa6";
-
+import {
+  FaSun,
+  FaMoon,
+  FaCloudSun,
+  FaCloud,
+  FaSmog,
+  FaCloudShowersHeavy,
+  FaBolt,
+  FaSnowflake,
+  FaWind,
+  FaCloudRain,
+  FaTint,
+  FaQuestion,
+  FaCloudSunRain
+} from "react-icons/fa";
 
 const CurrentConditions = ({ location, currentUser }) => {
   const [currentConditions, setCurrentConditions] = useState({
@@ -16,8 +27,8 @@ const CurrentConditions = ({ location, currentUser }) => {
     airQuality: { pm2_5: null, pm10: null },
     description: "",
   });
-  const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const memoizedLocation = useMemo(() => location, [location]);
 
@@ -26,21 +37,19 @@ const CurrentConditions = ({ location, currentUser }) => {
     console.log("Item: ", description);
     const condition = weatherConditions.find(
       (item) =>
-        
         item.day.trim().toLowerCase() === description.trim().toLowerCase() ||
         item.night.trim().toLowerCase() === description.trim().toLowerCase()
-        
     );
-  
+
     if (!condition) return <FaQuestion />;
-  
+
     switch (condition.icon) {
       case "fas fa-sun":
         return <FaSun style={{ color: "orange" }} />;
       case "fas fa-moon":
-        return <FaMoon style={{ color: "yellow" }} />;
+        return <FaMoon style={{ color: "gray" }} />;
       case "fas fa-cloud-sun":
-        return <FaCloudSun style={{ color: "lightgray" }} />;
+        return <FaCloudSun style={{ color: "lightblue" }} />;
       case "fas fa-cloud":
         return <FaCloud style={{ color: "gray" }} />;
       case "fas fa-smog":
@@ -54,23 +63,24 @@ const CurrentConditions = ({ location, currentUser }) => {
       case "fas fa-cloud-sleet":
         return <FaCloudShowersHeavy style={{ color: "blue" }} />;
       case "fas fa-cloud-bolt":
-        return <FaBolt style={{ color: "yellow" }} />; 
+        return <FaBolt style={{ color: "yellow" }} />;
       case "fas fa-cloud-sun-rain":
-        return <FaCloudSunRain style={{ color: "lightblue" }} />; 
+        return <FaCloudSunRain style={{ color: "lightblue" }} />;
       case "fas fa-thunder":
-        return <FaCloudBolt  style={{ color: "lightgrey" }} />
+        return <FaBolt style={{ color: "yellow" }} />;
+      case "fas fa-cloud-rain":
+        return <FaCloudRain style={{ color: "lightgrey" }} />;
+      case "fas fa-rain-bolt":
+        return <FaBolt style={{ color: "yellow" }} />;
       default:
         return <FaQuestion style={{ color: "gray" }} />;
     }
-    
-    
   };
-  
 
   const fetchWeatherData = async (retryCount = 3) => {
-    setLoading(true); 
+    setLoading(true);
     setError(null);
-    setCurrentConditions({ 
+    setCurrentConditions({
       temperature: null,
       wind: null,
       precipitation: null,
@@ -82,7 +92,7 @@ const CurrentConditions = ({ location, currentUser }) => {
     try {
       const response = await axios.get(
         `http://localhost:8080/api/data/weather/hourly?username=${currentUser.username}&location=${memoizedLocation.name}&country=${memoizedLocation.country}`,
-        { timeout: 10000 } 
+        { timeout: 10000 }
       );
 
       const data = response.data;
@@ -119,13 +129,13 @@ const CurrentConditions = ({ location, currentUser }) => {
     } catch (error) {
       if (retryCount > 0) {
         console.warn(`Retrying... Attempts left: ${retryCount}`);
-        setTimeout(() => fetchWeatherData(retryCount - 1), 2000); 
+        setTimeout(() => fetchWeatherData(retryCount - 1), 2000);
       } else {
         console.error("Error fetching weather data:", error);
         setError("Failed to fetch weather data. Please try again.");
       }
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -134,7 +144,7 @@ const CurrentConditions = ({ location, currentUser }) => {
       return;
     }
 
-    fetchWeatherData(); 
+    fetchWeatherData();
   }, [memoizedLocation, currentUser.username]);
 
   if (loading) {
@@ -155,7 +165,9 @@ const CurrentConditions = ({ location, currentUser }) => {
 
       <div className="temp-icon-container">
         <div className="temp">{currentConditions.temperature}°</div>
-        <div className="icon">{getWeatherIcon(currentConditions.description)}</div>
+        <div className="icon">
+          {getWeatherIcon(currentConditions.description)}
+        </div>
 
         <div className="description">{currentConditions.description}</div>
       </div>
