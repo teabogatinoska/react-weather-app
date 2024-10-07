@@ -49,7 +49,7 @@ const HourlyForecastModal = ({ isOpen, onClose, hourlyData, day, descriptions, a
         
     );
   
-    if (!condition) return <FaQuestion />;
+    if (!condition) return "/";
   
     switch (condition.icon) {
       case "fas fa-sun":

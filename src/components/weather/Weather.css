@@ -477,6 +477,10 @@ body {
   background-color: #dc3545;
 }
 
+.severity-minor {
+background-color: #28a745
+}
+
 .alert-info {
   margin-top: 10px;
   color: #555;
