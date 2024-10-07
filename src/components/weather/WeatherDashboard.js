@@ -112,12 +112,9 @@ const WeatherDashboard = ({ currentUser }) => {
   }, [currentUser.id]);
 
   useEffect(() => {
-    if (!favoritesLoaded || !location) return;
-
-    if (
-      previousLocation.current?.name !== location.name ||
-      previousLocation.current?.country !== location.country
-    ) {
+    if (!favoritesLoaded) return;  
+  
+    if (location && (previousLocation.current?.name !== location.name || previousLocation.current?.country !== location.country)) {
       previousLocation.current = location;
       fetchDailyForecast();
     }
