@@ -39,7 +39,7 @@ const WeatherDashboard = ({ currentUser }) => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/data/weather/daily?username=${currentUser.username}&location=${location.name}&country=${location.country}`,
+        `${process.env.REACT_APP_API_URL}/api/data/weather/daily?username=${currentUser.username}&location=${location.name}&country=${location.country}`,
         { timeout: 10000 } 
       );
       const forecastData = response.data.dailyData;
@@ -79,7 +79,7 @@ const WeatherDashboard = ({ currentUser }) => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/location/favorite-locations/${currentUser.id}`
+        `${process.env.REACT_APP_API_URL}/api/location/favorite-locations/${currentUser.id}`
       );
       if (isMounted) {
         setFavoriteCities(response.data);

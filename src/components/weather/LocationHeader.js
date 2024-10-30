@@ -13,7 +13,7 @@ const LocationHeader = ({ location, userId, refreshFavorites, onFavoriteAdded })
   useEffect(() => {
     const checkIfFavorite = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/location/favorite-locations/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/location/favorite-locations/${userId}`);
         const favoriteLocations = response.data;
 
         const favoriteLocation = favoriteLocations.find(
@@ -41,7 +41,7 @@ const LocationHeader = ({ location, userId, refreshFavorites, onFavoriteAdded })
   const toggleFavorite = async () => {
     if (!isFavorite) {
       try {
-        const response = await axios.post(`http://localhost:8080/api/location/${userId}/favorite-location`, {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/location/${userId}/favorite-location`, {
           userId: userId,
           name: location.name,
           country: location.country,
@@ -59,7 +59,7 @@ const LocationHeader = ({ location, userId, refreshFavorites, onFavoriteAdded })
     } else {
       try {
         if (favoriteId) {
-          await axios.delete(`http://localhost:8080/api/location/${userId}/favorite/${favoriteId}`);
+          await axios.delete(`${process.env.REACT_APP_API_URL}/api/location/${userId}/favorite/${favoriteId}`);
           setIsFavorite(false);
           setFavoriteId(null);
           refreshFavorites();

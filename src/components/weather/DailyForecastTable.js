@@ -15,30 +15,39 @@ const getDayOfWeek = (dateString) => {
   return `${dayOfWeek} ${day} ${month}`;
 };
 
+const isTodayOrLater = (dateString) => {
+  const today = new Date();
+  const date = new Date(dateString);
+  return date >= today.setHours(0, 0, 0, 0); 
+};
+
 const DailyForecastTable = ({ forecast, currentUser, location }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hourlyData, setHourlyData] = useState({});
   const [descriptions, setDescriptions] = useState({});
-  const [airQualityData, setairQualityData] = useState({});
+  const [airQualityData, setAirQualityData] = useState({});
   const [selectedDay, setSelectedDay] = useState('');
+  
+  const sortedForecast = forecast
+    .filter(day => isTodayOrLater(day.day))
+    .sort((a, b) => new Date(a.day) - new Date(b.day));
 
   const openHourlyModal = async (day) => {
-    setSelectedDay(day.day);  
+    setSelectedDay(day.day);
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/data/weather/hourly?username=${currentUser.username}&location=${location.name}&country=${location.country}`
+        `${process.env.REACT_APP_API_URL}/api/data/weather/hourly?username=${currentUser.username}&location=${location.name}&country=${location.country}`
       );
       const data = response.data;
-      console.log("Hourly response: ", data);
       setHourlyData(data.hourlyData);
       setDescriptions(data.weatherDescriptions);
-      setairQualityData(data.airQualityData);
-      setIsModalOpen(true); 
+      setAirQualityData(data.airQualityData);
+      setIsModalOpen(true);
     } catch (error) {
       console.error('Error fetching hourly forecast:', error);
     }
   };
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -57,9 +66,9 @@ const DailyForecastTable = ({ forecast, currentUser, location }) => {
           </tr>
         </thead>
         <tbody>
-          {forecast.map((day, index) => (
-            <tr key={index}>
-              <td className="weekDay">{getDayOfWeek(day.day)}</td>
+          {sortedForecast.map((day, index) => (
+            <tr key={index} className={isTodayOrLater(day.day) ? 'today' : ''}>
+              <td className="weekDay">{getDayOfWeek(day.day)} {isTodayOrLater(day.day) && index === 0 ? "(Today)" : ""}</td>
               <td className="temp">{day.temperature}</td>
               <td>{day.wind} m/s</td>
               <td className="precip">{day.precipitation}%</td>

@@ -21,7 +21,7 @@ const FavoriteCities = ({ favoriteCities, currentUser }) => {
       };
   
       const response = await axios.post(
-        "http://localhost:8080/api/weather/request",
+        `${process.env.REACT_APP_API_URL}/api/weather/request`,
         requestData
       );
   

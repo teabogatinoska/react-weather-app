@@ -20,7 +20,7 @@ const Navbar = ({ currentUser, logOut }) => {
       const source = axios.CancelToken.source();
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/location/search?query=${encodeURIComponent(
+          `${process.env.REACT_APP_API_URL}/api/location/search?query=${encodeURIComponent(
             query
           )}`,
           { cancelToken: source.token }
@@ -84,7 +84,7 @@ const Navbar = ({ currentUser, logOut }) => {
       };
 
       const response = await axios.post(
-        "http://localhost:8080/api/weather/request",
+        `${process.env.REACT_APP_API_URL}/api/weather/request`,
         requestData
       );
       navigate("/weather", { state: { location: response.data } });

@@ -91,7 +91,7 @@ const CurrentConditions = ({ location, currentUser }) => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/data/weather/hourly?username=${currentUser.username}&location=${memoizedLocation.name}&country=${memoizedLocation.country}`,
+        `${process.env.REACT_APP_API_URL}/api/data/weather/hourly?username=${currentUser.username}&location=${memoizedLocation.name}&country=${memoizedLocation.country}`,
         { timeout: 10000 }
       );
 

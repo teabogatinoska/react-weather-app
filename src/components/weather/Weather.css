@@ -480,6 +480,10 @@ body {
 .severity-minor {
 background-color: #28a745
 }
+.severity-severe {
+  background-color: #ff5733; 
+}
+
 
 .alert-info {
   margin-top: 10px;
